@@ -25,17 +25,30 @@ def upload_to_tmpfiles(image_url):
 
 @app.route('/')
 def home():
-    return jsonify({"status": "running", "endpoint": "/fetch?upi=your_upi_id"})
+    return jsonify({
+        "status": "running",
+        "endpoint": "/fetch?upi=your_upi_id",
+        "developer": "@Techvishalboss"
+    })
 
 @app.route('/fetch')
 def fetch_mobile():
     target_upi = request.args.get('upi', '')
     
     if not target_upi:
-        return jsonify({"error": "UPI ID required", "usage": "/fetch?upi=example@paytm"})
+        return jsonify({
+            "success": False,
+            "error": "UPI ID required",
+            "usage": "/fetch?upi=example@paytm",
+            "developer": "@Techvishalboss"
+        })
     
     if not token or not user_id:
-        return jsonify({"error": "token and user_id not configured"})
+        return jsonify({
+            "success": False,
+            "error": "token and user_id not configured",
+            "developer": "@Techvishalboss"
+        })
 
     try:
         url = "https://upi.paytm.com/upi-pc-profile/ext/v1/user/details/receiver_vpa"
@@ -80,18 +93,35 @@ def fetch_mobile():
                             temp_url = upload_to_tmpfiles(profile_url)
                         
                         return jsonify({
-                            "name": name,
-                            "profileUrl": temp_url,
-                            "phoneNumber": phone,
-                            "vpa": target_upi
+                            "success": True,
+                            "message": "UPI Details Fetched Successfully!",
+                            "data": {
+                                "name": name,
+                                "phone": phone,
+                                "upi_id": target_upi,
+                                "profile_pic": temp_url
+                            },
+                            "developer": "@Techvishalboss"
                         })
             
-            return jsonify({"error": "Data not found"})
+            return jsonify({
+                "success": False,
+                "error": "Data not found",
+                "developer": "@Techvishalboss"
+            })
         
-        return jsonify({"error": "custId not found"})
+        return jsonify({
+            "success": False,
+            "error": "custId not found",
+            "developer": "@Techvishalboss"
+        })
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "developer": "@Techvishalboss"
+        })
 
 if __name__ == '__main__':
     app.run(debug=True)
