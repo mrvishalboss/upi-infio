@@ -95,12 +95,10 @@ def fetch_mobile():
                         return jsonify({
                             "success": True,
                             "message": "UPI Details Fetched Successfully!",
-                            "data": {
-                                "name": name,
-                                "phone": phone,
-                                "upi_id": target_upi,
-                                "profile_pic": temp_url
-                            },
+                            "name": name,
+                            "phone": phone,
+                            "profile_pic": temp_url,
+                            "upi_id": target_upi,
                             "developer": "@Techvishalboss"
                         })
             
